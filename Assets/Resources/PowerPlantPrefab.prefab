@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 624843067831666687}
   - component: {fileID: 624843067831666656}
   - component: {fileID: 624843067831666657}
-  m_Layer: 0
+  - component: {fileID: -4877408228617086481}
+  m_Layer: 6
   m_Name: PowerPlantPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,3 +110,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.64, y: 0.96}
   m_EdgeRadius: 0
+--- !u!114 &-4877408228617086481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624843067831666658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d1d18eb856fd924d89661e79fd8ecbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -17,4 +17,18 @@ public class ButtonPanel : MonoBehaviour
             button.transform.SetParent(transform);
         }
     }
+
+    private void OnDisable()
+    {
+        List<GameObject> childObjects = new List<GameObject>();
+        int childCount = gameObject.transform.childCount;
+        for(int i = 0; i < childCount; i++)
+        {
+            childObjects.Add(gameObject.transform.GetChild(i).gameObject);
+        }
+        foreach(var cObject in childObjects)
+        {
+            Destroy(cObject);
+        }
+    }
 }

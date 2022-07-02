@@ -23,8 +23,6 @@ public class GridManager : Singleton<GridManager>
     public Vector3 GetClickedGridPositions()
     {
         Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
-        //Debug.Log("info: " + tilemap.GetClickedTilemapInfo(mouseWorldPosition));
-        Debug.Log("grid world positions: " + tilemap.GetClickedTilemapPositions(mouseWorldPosition));
         return tilemap.GetClickedTilemapPositions(mouseWorldPosition);
     }
 
@@ -36,7 +34,6 @@ public class GridManager : Singleton<GridManager>
         {
             for(int j = 0; j < height; j++)
             {
-                Debug.Log("taranan x: "+ (x+i) + "y: "+ (y+j));
                 if(!tilemap.GetClickedTilemapBuildAvailability((int)(x+i),(int)(y+j)))
                 {
                     return false;

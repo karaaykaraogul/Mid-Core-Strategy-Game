@@ -8,52 +8,26 @@ using UnityEngine.UI;
 
 namespace BuildingFactoryStatic
 {
-    public abstract class Building
+    public abstract class Building : MonoBehaviour
     {
         public abstract string Name {get; }
         public abstract string PrefabName{get; }
         public abstract int Width{get; }
         public abstract int Height{get; }
-        public abstract void Process();
-        public abstract void CreateBuilding();
-    }
-
-    public class BarracksBuilding : Building
-    {
-        public override string Name => "barracks";
-        public override string PrefabName => "BarracksPrefab";
-        public override int Width => 4;
-        public override int Height => 4;
-
-        public override void Process()
+        public virtual void Process()
         {
             CreateBuilding();
-            Debug.Log("barracks");
+            Debug.Log(this.Name);
         }
-
-        public override void CreateBuilding()
+        
+        public virtual void CreateBuilding()
         {
             var buildingGameObject = Resources.Load(PrefabName) as GameObject;
             BuildingClient.instance.InitializeBuilding(buildingGameObject, this);
         }
-    }
-
-    public class PowerPlantBuilding : Building
-    {
-        public override string Name => "power_plant";
-        public override string PrefabName => "PowerPlantPrefab";
-        public override int Width => 2;
-        public override int Height => 3;
-
-        public override void Process()
+        public virtual string GetBuildingName()
         {
-            CreateBuilding();
-            Debug.Log("power_plant");
-        }
-        public override void CreateBuilding()
-        {
-            var buildingGameObject = Resources.Load(PrefabName) as GameObject;
-            BuildingClient.instance.InitializeBuilding(buildingGameObject, this);
+            return Name;
         }
     }
 

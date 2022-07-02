@@ -15,7 +15,6 @@ public class BuildingButton : MonoBehaviour
 
     public void BuyBuilding()
     {
-        
         var building = BuildingFactory.GetBuilding(buttonText.text);
         building.Process();
     }

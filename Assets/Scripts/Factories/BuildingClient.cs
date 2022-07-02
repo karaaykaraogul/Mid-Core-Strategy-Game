@@ -26,10 +26,8 @@ public class BuildingClient : Singleton<BuildingClient>
             {
                 Vector3 buildingPos = GridManager.instance.GetClickedGridPositions();
                 bool isGridAvailable = GridManager.instance.GetGridAvailability(buildingClass.Width,buildingClass.Height);
-                Debug.Log(isGridAvailable);
                 if(isGridAvailable)
                 {
-                    Debug.Log("width: " + buildingClass.Width + "height: " + buildingClass.Height);
                     GridManager.instance.SetGridBuilt(buildingClass.Width, buildingClass.Height);
                     Instantiate(building,buildingPos,Quaternion.identity); 
                 } 

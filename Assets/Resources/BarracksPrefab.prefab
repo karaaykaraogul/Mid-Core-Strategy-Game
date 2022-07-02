@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1360672390915651344}
   - component: {fileID: 8063182148343690336}
   - component: {fileID: -6264086570977135241}
-  m_Layer: 7
+  - component: {fileID: -770680462156814035}
+  m_Layer: 6
   m_Name: BarracksPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,3 +110,15 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.28, y: 1.28}
   m_EdgeRadius: 0
+--- !u!114 &-770680462156814035
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4425024159457040660}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d81bda2d4c7ae264ca9bd86e8d3b61fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

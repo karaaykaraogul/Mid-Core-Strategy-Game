@@ -71,7 +71,6 @@ public class Grid<TGridObject> {
     private void GetXY(Vector3 worldPosition, out int x, out int y) {
         x = Mathf.FloorToInt((worldPosition - originPosition).x / cellSize);
         y = Mathf.FloorToInt((worldPosition - originPosition).y / cellSize);
-        Debug.Log("x no of tile is: " + x + "y no of tile is: " + y);
     }
 
     public void SetGridObject(int x, int y, TGridObject value) {
