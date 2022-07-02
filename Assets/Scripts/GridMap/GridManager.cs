@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using Utils;
 
-public class GridManager : MonoBehaviour 
+public class GridManager : Singleton<GridManager>
 {
     [SerializeField] private TilemapVisual tilemapVisual;
     private Tilemap tilemap;
     private Tilemap.TilemapObject.TilemapSprite tilemapSprite;
-    [SerializeField] private int width = 10;
-    [SerializeField] private int height = 10;
-    [SerializeField] private float cellSize = 5f;
+    [SerializeField] private int width = 100;
+    [SerializeField] private int height = 100;
+    [SerializeField] private float cellSize = 1f;
 
     private void Start() 
     {
@@ -20,26 +20,41 @@ public class GridManager : MonoBehaviour
         tilemap.SetDefaultGrid(width, height, tilemapSprite);
     }
 
-    private void Update() 
+    public Vector3 GetClickedGridPositions()
     {
-        if (Input.GetMouseButtonDown(0)) {
-            Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
-            tilemap.SetTilemapSprite(mouseWorldPosition, tilemapSprite);
-            tilemap.GetClickedTilemapInfo(mouseWorldPosition);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.T)) {
-            tilemapSprite = Tilemap.TilemapObject.TilemapSprite.Barracks;
-        }
-        // if (Input.GetKeyDown(KeyCode.Y)) {
-        //     tilemapSprite = Tilemap.TilemapObject.TilemapSprite.Ground;
-        // }
-        // if (Input.GetKeyDown(KeyCode.U)) {
-        //     tilemapSprite = Tilemap.TilemapObject.TilemapSprite.Path;
-        // }
-        // if (Input.GetKeyDown(KeyCode.I)) {
-        //     tilemapSprite = Tilemap.TilemapObject.TilemapSprite.Dirt;
-        // }
+        Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+        //Debug.Log("info: " + tilemap.GetClickedTilemapInfo(mouseWorldPosition));
+        Debug.Log("grid world positions: " + tilemap.GetClickedTilemapPositions(mouseWorldPosition));
+        return tilemap.GetClickedTilemapPositions(mouseWorldPosition);
     }
 
+    public bool GetGridAvailability(int width, int height)
+    {
+        Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+        tilemap.GetClickedTilemapObjectNo(mouseWorldPosition, out int x, out int y);
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                Debug.Log("taranan x: "+ (x+i) + "y: "+ (y+j));
+                if(!tilemap.GetClickedTilemapBuildAvailability((int)(x+i),(int)(y+j)))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+    public void SetGridBuilt(int width, int height)
+    {
+        Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+        tilemap.GetClickedTilemapObjectNo(mouseWorldPosition, out int x, out int y);
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                tilemap.SetTileNotBuildable((int)(x+i),(int)(y+j));
+            }
+        }
+    }
 }

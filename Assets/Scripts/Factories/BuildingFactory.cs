@@ -4,34 +4,56 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace BuildingFactoryStatic
 {
     public abstract class Building
     {
         public abstract string Name {get; }
+        public abstract string PrefabName{get; }
+        public abstract int Width{get; }
+        public abstract int Height{get; }
         public abstract void Process();
+        public abstract void CreateBuilding();
     }
 
     public class BarracksBuilding : Building
     {
-        [SerializeField] Sprite barracks;
-        [SerializeField] Tilemap tilemap;
         public override string Name => "barracks";
+        public override string PrefabName => "BarracksPrefab";
+        public override int Width => 4;
+        public override int Height => 4;
 
         public override void Process()
         {
+            CreateBuilding();
             Debug.Log("barracks");
+        }
+
+        public override void CreateBuilding()
+        {
+            var buildingGameObject = Resources.Load(PrefabName) as GameObject;
+            BuildingClient.instance.InitializeBuilding(buildingGameObject, this);
         }
     }
 
     public class PowerPlantBuilding : Building
     {
         public override string Name => "power_plant";
+        public override string PrefabName => "PowerPlantPrefab";
+        public override int Width => 2;
+        public override int Height => 3;
 
         public override void Process()
         {
+            CreateBuilding();
             Debug.Log("power_plant");
+        }
+        public override void CreateBuilding()
+        {
+            var buildingGameObject = Resources.Load(PrefabName) as GameObject;
+            BuildingClient.instance.InitializeBuilding(buildingGameObject, this);
         }
     }
 

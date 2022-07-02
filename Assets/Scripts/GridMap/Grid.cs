@@ -91,6 +91,14 @@ public class Grid<TGridObject> {
         SetGridObject(x, y, value);
     }
 
+    public void GetGridObjectNo(Vector3 worldPosition, out int x, out int y)
+    {
+        int width, height;
+        GetXY(worldPosition, out width, out height);
+        x = width;
+        y = height;
+    }
+
     public TGridObject GetGridObject(int x, int y) {
         if (x >= 0 && y >= 0 && x < width && y < height) {
             return gridArray[x, y];
@@ -103,6 +111,13 @@ public class Grid<TGridObject> {
         int x, y;
         GetXY(worldPosition, out x, out y);
         return GetGridObject(x, y);
+    }
+
+    public Vector3 GetGridObjectPositions(Vector3 worldPosition)
+    {
+        int x, y;
+        GetXY(worldPosition, out x, out y);
+        return GetWorldPosition(x, y);
     }
 
 }

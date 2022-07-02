@@ -41,9 +41,38 @@ public class Tilemap {
         tilemapVisual.SetGrid(this, grid);
     }
 
-    public void GetClickedTilemapInfo(Vector3 worldPosition)
+    public TilemapObject GetClickedTilemapInfo(Vector3 worldPosition)
     {
-        Debug.Log(grid.GetGridObject(worldPosition));
+        return grid.GetGridObject(worldPosition);
+    }
+
+    public void SetTileNotBuildable(int x, int y)
+    {
+        var tile = grid.GetGridObject(x,y);
+        tile.isBuildable = false;
+    }
+
+    public Vector3 GetClickedTilemapPositions(Vector3 worldPosition)
+    {
+        return grid.GetGridObjectPositions(worldPosition);
+    }
+
+    public void GetClickedTilemapObjectNo(Vector3 mouseWorldPosition, out int x, out int y)
+    {
+        var tilemapObject = grid.GetGridObject(mouseWorldPosition);
+        x = tilemapObject.GetX();
+        y = tilemapObject.GetY();
+    }
+
+    public bool GetClickedTilemapBuildAvailability(Vector3 worldPosition)
+    {
+        var tileMapObject = grid.GetGridObject(worldPosition);
+        return tileMapObject.isBuildable;
+    }
+    public bool GetClickedTilemapBuildAvailability(int x, int y)
+    {
+        var tileMapObject = grid.GetGridObject(x,y);
+        return tileMapObject.isBuildable;
     }
 
     /*
@@ -87,14 +116,14 @@ public class Tilemap {
         public override string ToString() {
             return tilemapSprite.ToString();
         }
-
-
-
-        [System.Serializable]
-        public class SaveObject {
-            public TilemapSprite tilemapSprite;
-            public int x;
-            public int y;
+        
+        public int GetX()
+        {
+            return x;
+        }
+        public int GetY()
+        {
+            return y;
         }
     }
 }
