@@ -8,6 +8,7 @@ public class BarracksBuilding : Building, IBuilding, IUnitProducer
     public override string PrefabName => "BarracksPrefab";
     public override int Width => 4;
     public override int Height => 4;
+    public string producerId => "barracks";
 
     public string buildingName 
         { 
@@ -15,4 +16,5 @@ public class BarracksBuilding : Building, IBuilding, IUnitProducer
         }
 
     public bool doesProduceUnits => true;
+
 }

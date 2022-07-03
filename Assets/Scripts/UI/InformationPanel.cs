@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnitFactoryStatic;
 
 public class InformationPanel : MonoBehaviour
 {
+    [SerializeField] UnitButton unitButtonPrefab;
     [SerializeField] GameObject selectedObjectInfo;
     [SerializeField] Text selectedObjectText;
     [SerializeField] Image selectedObjectImage;
@@ -29,8 +31,20 @@ public class InformationPanel : MonoBehaviour
         parentInfoObject.transform.SetParent(transform);
         if(e.building.GetComponent<IUnitProducer>() != null)
         {
-            Debug.Log("I produce units! ");
+            Dictionary<string, Unit> units = UnitFactory.GetUnitsByProducer();
+            foreach(var unit in units)
+            {
+                if(unit.Key == e.building.GetComponent<IUnitProducer>().producerId)
+                {
+                    var button = Instantiate(unitButtonPrefab);
+                    unitButtonPrefab.gameObject.name = name + "Button";
+                    button.GetComponent<Image>().sprite = Resources.Load<SpriteRenderer>(unit.Value.PrefabName).sprite;
+                    button.SetUnitName(unit.Value.Name);
+                    button.transform.SetParent(transform);
+                }
+            }
         }
+
     }
 
     private void EmptyClickInfo(object sender, EventArgs e)

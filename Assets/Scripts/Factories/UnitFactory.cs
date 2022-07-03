@@ -11,11 +11,11 @@ namespace UnitFactoryStatic
     public abstract class Unit : MonoBehaviour
     {
         public abstract string Name {get; }
-        //need implementation of producer building id
-        //define id's for buildings
+        public abstract string ProducerId {get; }
         public abstract string PrefabName{get; }
         public abstract int Health{get; }
         public abstract int Speed{get; }
+
         public virtual void Process()
         {
             CreateUnit();
@@ -25,7 +25,7 @@ namespace UnitFactoryStatic
         public virtual void CreateUnit()
         {
             var unitGameObject = Resources.Load(PrefabName) as GameObject;
-            //BuildingClient.instance.InitializeBuilding(unitGameObject, this);
+            UnitClient.instance.InitializeUnit(unitGameObject, this);
         }
         public virtual string GetUnitName()
         {
@@ -36,6 +36,7 @@ namespace UnitFactoryStatic
     public static class UnitFactory
     {
         private static Dictionary<string, Type> unitsByName;
+        private static Dictionary<string, Unit> unitsByProducer;
         
         private static bool IsInitialized => unitsByName != null;
 
@@ -49,15 +50,17 @@ namespace UnitFactoryStatic
             var unitsByTypes = Assembly.GetAssembly(typeof(Unit)).GetTypes().Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Unit)));
 
             unitsByName = new Dictionary<string, Type>();
+            unitsByProducer = new Dictionary<string, Unit>();
 
             foreach(var type in unitsByTypes)
             {
                 var effect = Activator.CreateInstance(type) as Unit;
+                unitsByProducer.Add(effect.ProducerId, effect);
                 unitsByName.Add(effect.Name, type);
             }
         }
         
-        public static Unit GetBuilding(string buildingType)
+        public static Unit GetUnit(string buildingType)
         {
             InitializeFactory();
 
@@ -71,20 +74,14 @@ namespace UnitFactoryStatic
             return null;
         }
 
-        public static void GetUnitsByProducer()
+        public static Dictionary<string, Unit> GetUnitsByProducer()
         {
             InitializeFactory();
-            var unitsByTypes = Assembly.GetAssembly(typeof(Unit)).GetTypes().Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Unit)));
-            foreach(var type in unitsByTypes)
-            {
-                Debug.Log("type: " + type);
-            }
-            //Debug.Log(unitsByProducer.First().Name);
+            return unitsByProducer;
         }
 
-        public static IEnumerable<string> GetBuildingNames()
+        public static IEnumerable<string> GetUnitNames()
         {
-            UnityEngine.Debug.Log("test");
             InitializeFactory();
             return unitsByName.Keys;
         }

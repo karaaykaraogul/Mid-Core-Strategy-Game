@@ -25,6 +25,7 @@ public class PlayerInputController : MonoBehaviour
 
             if(hit.collider != null)
             {
+                //to-do implement click on ui and dynamic actions for click types
                 selectedGameObject = hit.collider.gameObject;
                 OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
             }

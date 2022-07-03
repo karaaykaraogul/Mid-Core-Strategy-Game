@@ -6,9 +6,9 @@ using UnitFactoryStatic;
 
 public class UnitClient : Singleton<UnitClient>
 {
-    
-    void OnEnable()
+    public void InitializeUnit(GameObject unit, Unit buildingClass)
     {
-        UnitFactory.GetUnitsByProducer();
+        Debug.Log("initalizing: " + unit.name);
+        //initializing a unit function will be here
     }
 }
