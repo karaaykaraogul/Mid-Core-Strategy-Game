@@ -8,10 +8,17 @@ public class Tilemap {
     public event EventHandler OnLoaded;
 
     private Grid<TilemapObject> grid;
+    //private Grid<PathNode> pathGrid;
+
+    private List<TilemapObject> openList;
+    private List<TilemapObject> closedList;
+    private const int MOVE_STRAIGHT_COST = 10;
+    private const int MOVE_DIAGONAL_COST = 14;
 
     public Tilemap(int width, int height, float cellSize, Vector3 originPosition) 
     {
         grid = new Grid<TilemapObject>(width, height, cellSize, originPosition, (Grid<TilemapObject> g, int x, int y) => new TilemapObject(g, x, y));
+        //pathGrid = new Grid<PathNode>(width, height, cellSize, originPosition, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
 
     public void SetDefaultGrid(int width, int height, TilemapObject.TilemapSprite tilemapSprite)
@@ -52,6 +59,11 @@ public class Tilemap {
         tile.isBuildable = false;
     }
 
+    public Grid<TilemapObject> GetGrid()
+    {
+        return grid;
+    }
+
     public Vector3 GetClickedTilemapPositions(Vector3 worldPosition)
     {
         return grid.GetGridObjectPositions(worldPosition);
@@ -75,6 +87,142 @@ public class Tilemap {
         return tileMapObject.isBuildable;
     }
 
+    #region Pathfinding
+    public List<TilemapObject> FindPath(int startX, int startY, int endX, int endY)
+    {
+        TilemapObject startNode = grid.GetGridObject(startX, startY);
+        TilemapObject endNode = grid.GetGridObject(endX, endY);
+
+        if (startNode == null || endNode == null) {
+            // Invalid Path
+            return null;
+        }
+
+        openList = new List<TilemapObject> {startNode};
+        closedList = new List<TilemapObject>();
+
+        for(int x= 0; x < grid.GetWidth(); x++)
+        {
+            for(int y = 0; y < grid.GetHeight(); y++)
+            {
+                TilemapObject tilemapNode = grid.GetGridObject(x,y);
+                tilemapNode.gCost = 99999999;
+                tilemapNode.CalculateFCost();
+                tilemapNode.cameFromNode = null;
+            }
+        }
+
+        startNode.gCost = 0;
+        startNode.hCost = CalculateDistanceCost(startNode,endNode);
+        startNode.CalculateFCost();
+
+        while(openList.Count > 0)
+        {
+            TilemapObject currentNode = GetLowestFCostNode(openList);
+            if(currentNode == endNode)
+            {
+                Debug.Log("son node geldi");
+                return CalculatePath(endNode);
+            }
+
+            openList.Remove(currentNode);
+            closedList.Add(currentNode);
+
+            foreach(TilemapObject neighbourNode in GetNeighbourList(currentNode))
+            {
+                if(closedList.Contains(neighbourNode)) continue;
+
+                int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
+                if(tentativeGCost < neighbourNode.gCost)
+                {
+                    neighbourNode.cameFromNode = currentNode;
+                    neighbourNode.gCost = tentativeGCost;
+                    neighbourNode.hCost = CalculateDistanceCost(neighbourNode, endNode);
+                    neighbourNode.CalculateFCost();;
+                    
+                    if(!openList.Contains(neighbourNode))
+                    {
+                        openList.Add(neighbourNode);
+                    }
+                }
+            }
+        }
+
+        //Out of nodes on the openList
+        return null;
+    }
+
+    private List<TilemapObject> GetNeighbourList(TilemapObject currentNode)
+    {
+        List<TilemapObject> neighbourList = new List<TilemapObject>();
+
+        if(currentNode.GetX() - 1 >= 0)
+        {
+            //Left
+            neighbourList.Add(GetNode(currentNode.GetX() - 1, currentNode.GetY()));
+            //Left Down
+            if(currentNode.GetY() - 1 >= 0) neighbourList.Add(GetNode(currentNode.GetX()-1, currentNode.GetY()-1));
+            //Left Up
+            if(currentNode.GetY() + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.GetX()-1, currentNode.GetY()+1));
+        }
+        if(currentNode.GetX() + 1 < grid.GetWidth())
+        {
+            //Right
+            neighbourList.Add(GetNode(currentNode.GetX() +1, currentNode.GetY()));
+            //Right Down
+            if(currentNode.GetY() - 1 >= 0) neighbourList.Add(GetNode(currentNode.GetX()+1, currentNode.GetY()-1));
+            //Right Up
+            if(currentNode.GetY() + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.GetX()+1, currentNode.GetY()+1));
+        }
+        //Down
+        if(currentNode.GetY() - 1 >= 0) neighbourList.Add(GetNode(currentNode.GetX(), currentNode.GetY()-1));
+        //Up
+        if(currentNode.GetY() + 1 < grid.GetHeight()) neighbourList.Add(GetNode(currentNode.GetX(), currentNode.GetY()+1));
+
+        return neighbourList;
+    }
+
+    private TilemapObject GetNode(int x, int y)
+    {
+        return grid.GetGridObject(x,y);
+    }
+
+    private List<TilemapObject> CalculatePath(TilemapObject endNode)
+    {
+        List<TilemapObject> path = new List<TilemapObject>();
+        path.Add(endNode);
+        TilemapObject currentNode = endNode;
+        while(currentNode.cameFromNode != null)
+        {
+            path.Add(currentNode.cameFromNode);
+            currentNode = currentNode.cameFromNode;
+        }
+        path.Reverse();
+        return path;
+    }
+
+    private TilemapObject GetLowestFCostNode(List<TilemapObject> pathNodeList)
+    {
+        TilemapObject lowestFCostNode = pathNodeList[0];
+        for(int i = 1; i < pathNodeList.Count; i++)
+        {
+            if(pathNodeList[i].fCost < lowestFCostNode.fCost)
+            {
+                lowestFCostNode = pathNodeList[i];
+            }
+        }
+        return lowestFCostNode;
+    }
+
+    private int CalculateDistanceCost(TilemapObject a, TilemapObject b)
+    {
+        int xDistance = Mathf.Abs(a.GetX() - b.GetX());
+        int yDistance = Mathf.Abs(a.GetY() - b.GetY());
+        int remaining = Mathf.Abs(xDistance-yDistance);
+        return MOVE_DIAGONAL_COST * Mathf.Min(xDistance,yDistance) + MOVE_STRAIGHT_COST * remaining;
+    }
+    #endregion
+
     /*
      * Represents a single Tilemap Object that exists in each Grid Cell Position
      * */
@@ -90,6 +238,13 @@ public class Tilemap {
         private Grid<TilemapObject> grid;
         private int x;
         private int y;
+
+        public int gCost;
+        public int hCost;
+        public int fCost;
+
+        public TilemapObject cameFromNode;
+
         private TilemapSprite tilemapSprite;
         bool _isBuildable = true;
         public bool isBuildable{
@@ -102,6 +257,16 @@ public class Tilemap {
             this.grid = grid;
             this.x = x;
             this.y = y;
+        }
+
+        // public override string ToString()
+        // {
+        //     return x+","+y;
+        // }
+
+        public void CalculateFCost()
+        {
+            fCost = gCost + hCost;
         }
 
         public void SetTilemapSprite(TilemapSprite tilemapSprite) {

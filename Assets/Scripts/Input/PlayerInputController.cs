@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,7 +30,7 @@ public class PlayerInputController : MonoBehaviour
                 selectedGameObject = hit.collider.gameObject;
                 OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
             }
-            else
+            else if(!EventSystem.current.IsPointerOverGameObject())
             {
                 OnEmptyClick?.Invoke(this, EventArgs.Empty);
             }
