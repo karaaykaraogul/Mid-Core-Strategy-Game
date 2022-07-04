@@ -11,6 +11,7 @@ public class PlayerInputController : MonoBehaviour
 
     public event EventHandler<OnBuildingSelectedEventArgs> OnBuildingSelected;
     public event EventHandler OnEmptyClick;
+    public event EventHandler OnUnitClick;
     public class OnBuildingSelectedEventArgs : EventArgs
     {
         public GameObject building;
@@ -26,9 +27,20 @@ public class PlayerInputController : MonoBehaviour
 
             if(hit.collider != null)
             {
-                //to-do implement click on ui and dynamic actions for click types
-                selectedGameObject = hit.collider.gameObject;
-                OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
+                if(hit.collider.GetComponent<IMobile>() != null)
+                {
+                    if(!hit.collider.GetComponent<IMobile>().GetSelectStatus())
+                        hit.collider.GetComponent<IMobile>().Interaction();
+                    else
+                    {
+                        hit.collider.GetComponent<IMobile>().DeselectUnit();
+                    }
+                }
+                else{
+                    //to-do implement click on ui and dynamic actions for click types
+                    selectedGameObject = hit.collider.gameObject;
+                    OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
+                }
             }
             else if(!EventSystem.current.IsPointerOverGameObject())
             {

@@ -14,7 +14,7 @@ namespace UnitFactoryStatic
         public abstract string ProducerId {get; }
         public abstract string PrefabName{get; }
         public abstract int Health{get; }
-        public abstract int Speed{get; }
+        public abstract float Speed{get; }
 
         public virtual void Process()
         {

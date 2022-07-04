@@ -20,27 +20,27 @@ public class GridManager : Singleton<GridManager>
         tilemap.SetDefaultGrid(width, height, tilemapSprite);
     }
 
-    private void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
-        {
-            Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
-            tilemap.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
-            // Debug.Log(x + "," + y);
-            List<Tilemap.TilemapObject> path = tilemap.FindPath(0,0,x,y);
-            if(path != null)
-            {
-                for(int i = 0; i <path.Count - 1; i++)
-                {
-                    Debug.DrawLine(new Vector3(path[i].GetX(),path[i].GetY()) * cellSize + Vector3.one * cellSize/2, new Vector3(path[i+1].GetX(),path[i+1].GetY()) * cellSize + Vector3.one * cellSize/2, Color.red , 5f);
-                }
-            }
-            else
-            {
-                Debug.Log("null aga");
-            }
-        }
-    }
+    // private void Update()
+    // {
+    //     if(Input.GetMouseButtonDown(0))
+    //     {
+    //         Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();
+    //         tilemap.GetGrid().GetXY(mouseWorldPosition, out int x, out int y);
+    //         // Debug.Log(x + "," + y);
+    //         List<Tilemap.TilemapObject> path = tilemap.FindPath(0,0,x,y);
+    //         if(path != null)
+    //         {
+    //             for(int i = 0; i <path.Count - 1; i++)
+    //             {
+    //                 Debug.DrawLine(new Vector3(path[i].GetX(),path[i].GetY()) * cellSize + Vector3.one * cellSize/2, new Vector3(path[i+1].GetX(),path[i+1].GetY()) * cellSize + Vector3.one * cellSize/2, Color.red , 5f);
+    //             }
+    //         }
+    //         else
+    //         {
+    //             Debug.Log("null aga");
+    //         }
+    //     }
+    // }
 
     public Vector3 GetClickedGridPositions()
     {
@@ -73,6 +73,7 @@ public class GridManager : Singleton<GridManager>
             for(int j = 0; j < height; j++)
             {
                 tilemap.SetTileNotBuildable((int)(x+i),(int)(y+j));
+                tilemap.SetTileNotWalkable((int)(x+i),(int)(y+j));
             }
         }
     }

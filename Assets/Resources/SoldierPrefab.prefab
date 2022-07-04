@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 4389050079979902617}
   - component: {fileID: 3962460261843159055}
   - component: {fileID: -2854316946195943381}
+  - component: {fileID: -73132055102596805}
+  - component: {fileID: 5846189550294230953}
   m_Layer: 0
   m_Name: SoldierPrefab
   m_TagString: Untagged
@@ -109,3 +111,28 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 0.32}
   m_EdgeRadius: 0
+--- !u!114 &-73132055102596805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9204769734788193744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 440fd2bfabf9f664d8773d193b72b4a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitPathfindingHandler: {fileID: 5846189550294230953}
+--- !u!114 &5846189550294230953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9204769734788193744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e62fed40c0c43034481326288a73403f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

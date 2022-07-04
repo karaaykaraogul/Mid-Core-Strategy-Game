@@ -2,13 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Utils;
 
-public class Tilemap {
+public class Tilemap{
 
     public event EventHandler OnLoaded;
 
     private Grid<TilemapObject> grid;
     //private Grid<PathNode> pathGrid;
+    public static Tilemap Instance {get; private set;}
 
     private List<TilemapObject> openList;
     private List<TilemapObject> closedList;
@@ -17,6 +19,7 @@ public class Tilemap {
 
     public Tilemap(int width, int height, float cellSize, Vector3 originPosition) 
     {
+        Instance = this;
         grid = new Grid<TilemapObject>(width, height, cellSize, originPosition, (Grid<TilemapObject> g, int x, int y) => new TilemapObject(g, x, y));
         //pathGrid = new Grid<PathNode>(width, height, cellSize, originPosition, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
@@ -58,6 +61,11 @@ public class Tilemap {
         var tile = grid.GetGridObject(x,y);
         tile.isBuildable = false;
     }
+    public void SetTileNotWalkable(int x, int y)
+    {
+        var tile = grid.GetGridObject(x,y);
+        tile.isWalkable = false;
+    }
 
     public Grid<TilemapObject> GetGrid()
     {
@@ -88,15 +96,49 @@ public class Tilemap {
     }
 
     #region Pathfinding
+    public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition) {
+        grid.GetXY(startWorldPosition, out int startX, out int startY);
+        grid.GetXY(endWorldPosition, out int endX, out int endY);
+
+        List<TilemapObject> path = FindPath(startX, startY, endX, endY);
+        if (path == null) {
+            return null;
+        } else {
+            List<Vector3> vectorPath = new List<Vector3>();
+            foreach (TilemapObject pathNode in path) {
+                vectorPath.Add(new Vector3(pathNode.GetX(), pathNode.GetY()) * grid.GetCellSize() + Vector3.one * grid.GetCellSize() * .5f);
+            }
+            return vectorPath;
+        }
+    }
+
     public List<TilemapObject> FindPath(int startX, int startY, int endX, int endY)
     {
         TilemapObject startNode = grid.GetGridObject(startX, startY);
         TilemapObject endNode = grid.GetGridObject(endX, endY);
-
+        
         if (startNode == null || endNode == null) {
             // Invalid Path
             return null;
         }
+
+        if(endNode.isOccupiedByUnit)
+        {
+            foreach(var neighbour in GetNeighbourList(endNode))
+            {
+                if(!neighbour.isOccupiedByUnit)
+                {
+                    endNode = neighbour;
+                    break;
+                }
+            }
+            if(endNode.isOccupiedByUnit)
+            {
+                return null;
+            }
+        }
+
+        startNode.isOccupiedByUnit = false;
 
         openList = new List<TilemapObject> {startNode};
         closedList = new List<TilemapObject>();
@@ -122,6 +164,7 @@ public class Tilemap {
             if(currentNode == endNode)
             {
                 Debug.Log("son node geldi");
+                currentNode.isOccupiedByUnit = true;
                 return CalculatePath(endNode);
             }
 
@@ -131,6 +174,11 @@ public class Tilemap {
             foreach(TilemapObject neighbourNode in GetNeighbourList(currentNode))
             {
                 if(closedList.Contains(neighbourNode)) continue;
+                if(!neighbourNode.isWalkable)
+                {
+                    closedList.Add(neighbourNode);
+                    continue;
+                }
 
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
                 if(tentativeGCost < neighbourNode.gCost)
@@ -226,7 +274,7 @@ public class Tilemap {
     /*
      * Represents a single Tilemap Object that exists in each Grid Cell Position
      * */
-    public class TilemapObject : IBuildable {
+    public class TilemapObject : IBuildable, IWalkable {
 
         public enum TilemapSprite {
             None,
@@ -247,16 +295,30 @@ public class Tilemap {
 
         private TilemapSprite tilemapSprite;
         bool _isBuildable = true;
+        bool _isWalkable;
+        bool _isOccupiedByUnit;
         public bool isBuildable{
             get { return _isBuildable; }
             set { _isBuildable = value; }
         }
-        
-        
+
+        public bool isWalkable {
+            get { return _isWalkable; }
+            set { _isWalkable = value; }
+        }
+
+        public bool isOccupiedByUnit {
+            get { return _isOccupiedByUnit; }
+            set { _isOccupiedByUnit = value; }
+        }
+
+
         public TilemapObject(Grid<TilemapObject> grid, int x, int y) {
             this.grid = grid;
             this.x = x;
             this.y = y;
+            _isWalkable = true;
+            _isOccupiedByUnit = false;
         }
 
         // public override string ToString()
