@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnitFactoryStatic;
 using UnityEngine.UI;
+using BuildingFactoryStatic;
 
 public class UnitButton : MonoBehaviour
 {
+    GameObject initializedFromBuilding;
     [SerializeField] Text buttonText;
+
+    public void Init(GameObject initializedFromBuilding)
+    {
+        this.initializedFromBuilding = initializedFromBuilding;
+    }
+
     public void SetUnitName(string name)
     {
         buttonText.text = name;
@@ -17,6 +25,6 @@ public class UnitButton : MonoBehaviour
     {
         var unit = UnitFactory.GetUnit(buttonText.text);
         Debug.Log("clicked on: " + unit.Name);
-        unit.Process();
+        unit.Process(initializedFromBuilding);
     }
 }

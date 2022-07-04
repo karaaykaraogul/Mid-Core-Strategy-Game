@@ -343,6 +343,17 @@ public class Tilemap{
         public override string ToString() {
             return tilemapSprite.ToString();
         }
+
+        public Vector3 GetTileWorldPositions()
+        {
+            Debug.Log("x: " + x + "y: " + y + "world Pos: " + grid.GetWorldPosition(GetX(),GetY()));
+            return grid.GetWorldPosition(GetX(),GetY());
+        }
+
+        public Vector3 GetXY()
+        {
+            return new Vector3(x,y,0);
+        }
         
         public int GetX()
         {

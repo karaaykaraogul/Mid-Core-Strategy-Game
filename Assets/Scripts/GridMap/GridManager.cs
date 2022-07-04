@@ -42,6 +42,14 @@ public class GridManager : Singleton<GridManager>
     //     }
     // }
 
+    
+
+    public Tilemap.TilemapObject GetBuildingSpawnPoint(Vector3 buildingPos)
+    {
+        tilemap.GetClickedTilemapObjectNo(buildingPos, out int x, out int y);
+        return tilemap.GetGrid().GetGridObject(x,(y-1));
+    }
+
     public Vector3 GetClickedGridPositions()
     {
         Vector3 mouseWorldPosition = UtilsClass.GetMouseWorldPosition();

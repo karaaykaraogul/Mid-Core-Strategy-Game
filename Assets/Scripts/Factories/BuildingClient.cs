@@ -29,7 +29,12 @@ public class BuildingClient : Singleton<BuildingClient>
                 if(isGridAvailable)
                 {
                     GridManager.instance.SetGridBuilt(buildingClass.Width, buildingClass.Height);
-                    Instantiate(building,buildingPos,Quaternion.identity); 
+                    GameObject newBuilding = Instantiate(building,buildingPos,Quaternion.identity);
+                    if(newBuilding.GetComponent<IUnitProducer>() != null)
+                    {
+                        newBuilding.GetComponent<IUnitProducer>().spawnPoint = GridManager.instance.GetBuildingSpawnPoint(buildingPos);
+                        Debug.Log("spawn point x and y: " + newBuilding.GetComponent<IUnitProducer>().spawnPoint.GetX() + " , " + newBuilding.GetComponent<IUnitProducer>().spawnPoint.GetY()); 
+                    } 
                 } 
                 isInitialized = false;
             }

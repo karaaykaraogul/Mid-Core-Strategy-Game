@@ -71,6 +71,11 @@ public class SoldierUnit : Unit, IBarrackUnit, IMobile
         throw new System.NotImplementedException();
     }
 
+    public void SetSpawnPath(Vector3 spawnPoint)
+    {
+        unitPathfindingHandler.SetTargetPosition(spawnPoint, GetSpeed());
+    }
+
     public bool GetSelectStatus()
     {
         return isSelected;

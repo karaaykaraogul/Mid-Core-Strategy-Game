@@ -4,6 +4,11 @@ using UnityEngine;
 using BuildingFactoryStatic;
 public class BarracksBuilding : Building, IBuilding, IUnitProducer
 {
+    Tilemap.TilemapObject _spawnPoint;
+    public Tilemap.TilemapObject spawnPoint {
+            get { return _spawnPoint; }
+            set { _spawnPoint = value; }
+        }
     public override string Name => "Barracks";
     public override string PrefabName => "BarracksPrefab";
     public override int Width => 4;

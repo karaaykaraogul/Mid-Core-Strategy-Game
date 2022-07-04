@@ -16,16 +16,17 @@ namespace UnitFactoryStatic
         public abstract int Health{get; }
         public abstract float Speed{get; }
 
-        public virtual void Process()
+        public virtual void Process(GameObject initializedFromBuilding)
         {
-            CreateUnit();
+            Debug.Log("process: " + initializedFromBuilding.name);
+            CreateUnit(initializedFromBuilding);
             Debug.Log(this.Name);
         }
         
-        public virtual void CreateUnit()
+        public virtual void CreateUnit(GameObject initializedFromBuilding)
         {
             var unitGameObject = Resources.Load(PrefabName) as GameObject;
-            UnitClient.instance.InitializeUnit(unitGameObject, this);
+            UnitClient.instance.InitializeUnit(unitGameObject, this, initializedFromBuilding);
         }
         public virtual string GetUnitName()
         {

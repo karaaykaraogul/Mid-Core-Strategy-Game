@@ -36,7 +36,9 @@ public class InformationPanel : MonoBehaviour
             {
                 if(unit.Key == e.building.GetComponent<IUnitProducer>().producerId)
                 {
-                    var button = Instantiate(unitButtonPrefab);
+                    //unitButtonPrefab = new UnitButton(e.building);
+                    UnitButton button = Instantiate(unitButtonPrefab);
+                    button.Init(e.building);
                     unitButtonPrefab.gameObject.name = name + "Button";
                     button.GetComponent<Image>().sprite = Resources.Load<SpriteRenderer>(unit.Value.PrefabName).sprite;
                     button.SetUnitName(unit.Value.Name);

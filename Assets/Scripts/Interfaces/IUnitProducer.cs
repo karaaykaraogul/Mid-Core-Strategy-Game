@@ -4,6 +4,7 @@ using UnityEngine;
 
 public interface IUnitProducer
 {
+    Tilemap.TilemapObject spawnPoint{get; set;}
     bool doesProduceUnits{get; }
     string producerId{get; }
 }
