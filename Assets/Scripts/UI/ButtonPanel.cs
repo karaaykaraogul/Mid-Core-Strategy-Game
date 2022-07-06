@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class ButtonPanel : MonoBehaviour
 {
+    [SerializeField] GameObject parentScrollPanel;
     [SerializeField] BuildingButton buttonPrefab;
 
     private void OnEnable()
@@ -14,7 +15,7 @@ public class ButtonPanel : MonoBehaviour
             var button = Instantiate(buttonPrefab);
             button.gameObject.name = name + "Button";
             button.SetBuildingName(name);
-            button.transform.SetParent(transform);
+            button.transform.SetParent(parentScrollPanel.transform);
         }
     }
 
