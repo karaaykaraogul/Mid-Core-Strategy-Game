@@ -7,7 +7,7 @@ public interface IMobile
 {
     void Interaction();
     void DeselectUnit();
-    void CancelInteraction(object sender, EventArgs e);
+    void CancelInteraction();
     void SetSpawnPath(Vector3 spawnPoint);
     bool GetSelectStatus();
     float GetSpeed();

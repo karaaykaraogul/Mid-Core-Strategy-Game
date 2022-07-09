@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnitFactoryStatic;
+using GameEvent.Args;
 
 public class InformationPanel : MonoBehaviour
 {
@@ -14,11 +15,11 @@ public class InformationPanel : MonoBehaviour
     private void OnEnable()
     {
         PlayerInputController inputController = FindObjectOfType<PlayerInputController>();
-        inputController.OnBuildingSelected += BuildingSelectedInfo;
-        inputController.OnEmptyClick += EmptyClickInfo;
+        GameEvents.current.onBuildingSelected += BuildingSelectedInfo;
+        GameEvents.current.onEmptyClick += EmptyClickInfo;
     }
 
-    private void BuildingSelectedInfo(object sender, PlayerInputController.OnBuildingSelectedEventArgs e)
+    private void BuildingSelectedInfo(object sender, OnBuildingSelectedEventArgs e)
     {
         RemoveChildObjects();
         var parentInfoObject = Instantiate(selectedObjectInfo);
@@ -49,7 +50,7 @@ public class InformationPanel : MonoBehaviour
 
     }
 
-    private void EmptyClickInfo(object sender, EventArgs e)
+    private void EmptyClickInfo()
     {
         RemoveChildObjects();
     }

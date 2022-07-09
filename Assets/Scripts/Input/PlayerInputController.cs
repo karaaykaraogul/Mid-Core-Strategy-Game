@@ -4,19 +4,21 @@ using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
 using UnityEngine.UI;
+using GameEvent.Args;
 
 public class PlayerInputController : MonoBehaviour
 {
     public GameObject selectedGameObject;
 
-    public event EventHandler<OnBuildingSelectedEventArgs> OnBuildingSelected;
-    public event EventHandler OnEmptyClick;
-    public event EventHandler OnUnitClick;
-    public class OnBuildingSelectedEventArgs : EventArgs
+    private void OnEmptyClick()
     {
-        public GameObject building;
+        GameEvents.current.OnEmptyClick();
     }
 
+    private void OnBuildingSelected(object sender, OnBuildingSelectedEventArgs e)
+    {
+        GameEvents.current.OnBuildingSelected(sender, e);
+    }
 
     void Update()
     {
@@ -39,12 +41,12 @@ public class PlayerInputController : MonoBehaviour
                 else{
                     //to-do implement click on ui and dynamic actions for click types
                     selectedGameObject = hit.collider.gameObject;
-                    OnBuildingSelected?.Invoke(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
+                    OnBuildingSelected(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
                 }
             }
             else if(!EventSystem.current.IsPointerOverGameObject())
             {
-                OnEmptyClick?.Invoke(this, EventArgs.Empty);
+                GameEvents.current.OnEmptyClick();
             }
         }
     }

@@ -7,6 +7,11 @@ using UnitFactoryStatic;
 public class UnitClient : Singleton<UnitClient>
 {
     UnitPathfindingMovementHandler unitPathfindingHandler;
+
+    private void OnEntityCreated()
+    {
+        GameEvents.current.OnEntityCreated();
+    }
     public void InitializeUnit(GameObject unit, Unit unitClass, GameObject initializedFromBuilding)
     {
         Debug.Log("initalizing: " + unit.name);
@@ -20,5 +25,6 @@ public class UnitClient : Singleton<UnitClient>
             newUnit.GetComponent<IMobile>().SetSpawnPath(spawnPoint);
             Debug.Log("instantiated new unit"); 
         } 
+        OnEntityCreated();
     }
 }

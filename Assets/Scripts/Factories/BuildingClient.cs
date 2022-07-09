@@ -8,6 +8,12 @@ public class BuildingClient : Singleton<BuildingClient>
 {
     public CustomCursor customCursor;
     public bool isInitialized = false;
+
+    private void OnEntityCreated()
+    {
+        GameEvents.current.OnEntityCreated();
+    }
+
     public void InitializeBuilding(GameObject building, Building buildingClass)
     {
         customCursor.gameObject.SetActive(true);
@@ -45,6 +51,7 @@ public class BuildingClient : Singleton<BuildingClient>
             }
             yield return null;
         }
+        OnEntityCreated();
         customCursor.gameObject.SetActive(false);
         Cursor.visible = true;
         yield return null;

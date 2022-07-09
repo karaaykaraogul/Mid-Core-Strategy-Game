@@ -32,7 +32,7 @@ public class SoldierUnit : Unit, IBarrackUnit, IMobile
     void OnEnable()
     {
         PlayerInputController inputController = FindObjectOfType<PlayerInputController>();
-        inputController.OnEmptyClick += CancelInteraction;
+        GameEvents.current.onEmptyClick += CancelInteraction;
     }
     
     void Update()
@@ -55,7 +55,7 @@ public class SoldierUnit : Unit, IBarrackUnit, IMobile
         this.isSelected = false;
     }
 
-    public void CancelInteraction(object sender, EventArgs e)
+    public void CancelInteraction()
     {
         gameObject.GetComponent<SpriteRenderer>().color = baseColor;
         this.isSelected = false;
