@@ -18,7 +18,7 @@ public class BuildingClient : Singleton<BuildingClient>
     {
         customCursor.gameObject.SetActive(true);
         customCursor.GetComponent<SpriteRenderer>().sprite = building.GetComponent<SpriteRenderer>().sprite;
-        customCursor.GetComponent<SpriteRenderer>().color = building.GetComponent<SpriteRenderer>().color;
+        customCursor.GetComponent<SpriteRenderer>().color = Color.green;
         Cursor.visible = false;
         isInitialized = true;
         StartCoroutine(PlacingBuilding(building, buildingClass));
@@ -28,6 +28,14 @@ public class BuildingClient : Singleton<BuildingClient>
     {
         while(isInitialized)
         {
+            if(!GridManager.instance.GetGridAvailability(buildingClass.Width,buildingClass.Height))
+            {
+                customCursor.GetComponent<SpriteRenderer>().color = Color.red;
+            }
+            else
+            {
+                customCursor.GetComponent<SpriteRenderer>().color = Color.green;
+            }
             if(Input.GetMouseButtonDown(0))
             {
                 Vector3 buildingPos = GridManager.instance.GetClickedGridPositions();
