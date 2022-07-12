@@ -21,11 +21,11 @@ public class EncampmentBuilding : Building, IBuilding, ICapBuilding
 
     void OnEnable()
     {
-        PlayerResourceManager.instance.IncreaseSoldierCap(capIncreaseAmount);
+        PlayerResourceManager.instance.IncreaseUnitCap(capIncreaseAmount);
     }
 
     void OnDestroy()
     {
-        PlayerResourceManager.instance.DecreaseSoldierCap(capIncreaseAmount);
+        PlayerResourceManager.instance.DecreaseUnitCap(capIncreaseAmount);
     }
 }

@@ -26,5 +26,6 @@ public class UnitClient : Singleton<UnitClient>
             Debug.Log("instantiated new unit"); 
         } 
         OnEntityCreated();
+        PlayerResourceManager.instance.IncreaseCurrentUnitAmount();
     }
 }
