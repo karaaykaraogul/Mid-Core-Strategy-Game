@@ -22,4 +22,5 @@ public class BarracksBuilding : Building, IBuilding, IUnitProducer
 
     public bool doesProduceUnits => true;
 
+    public int buildingCost => 25;
 }

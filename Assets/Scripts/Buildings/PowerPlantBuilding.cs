@@ -13,4 +13,6 @@ public class PowerPlantBuilding : Building, IBuilding
         { 
             get => this.Name;
         }
+
+    public int buildingCost => 50;
 }
