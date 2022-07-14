@@ -7,20 +7,25 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
 {
     int unitCap = 0;
     int powerCap = 100;
+    int buildingCap = 5;
     int currentUnitAmount = 0;
     int currentPowerAmount = 100;
+    int currentBuildingAmount = 0;
 
     [SerializeField] Text powerCapText;
     [SerializeField] Text powerCurrentText;
     [SerializeField] Text unitCapText;
     [SerializeField] Text unitCurrentText;
-
+    [SerializeField] Text buildingCapText;
+    [SerializeField] Text buildingCurrentText;
     void OnEnable()
     {
         SetUnitCapText(unitCap.ToString());
         SetPowerCapText(powerCap.ToString());
+        SetBuildingCapText(buildingCap.ToString());
         SetPowerCurrentText(currentPowerAmount.ToString());
         SetUnitCurrentText(currentUnitAmount.ToString());
+        SetBuildingCurrentText(currentBuildingAmount.ToString());
     }
 
 
@@ -35,12 +40,6 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
     {
         currentUnitAmount++;
         SetUnitCurrentText(currentUnitAmount.ToString());
-    }
-
-    public void IncreasePowerCap(int increaseAmount)
-    {
-        powerCap += increaseAmount;
-        SetPowerCapText(powerCap.ToString());
     }
     public void DecreaseUnitCap(int increaseAmount)
     {
@@ -75,7 +74,12 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
         currentPowerAmount += amount;
         SetPowerCurrentText(currentPowerAmount.ToString());
     }
-
+    
+    public void IncreasePowerCap(int increaseAmount)
+    {
+        powerCap += increaseAmount;
+        SetPowerCapText(powerCap.ToString());
+    }
     public void DecreasePowerCap(int increaseAmount)
     {
         powerCap -= increaseAmount;
@@ -100,6 +104,45 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
     public int GetPowerCap()
     {
         return powerCap;
+    }
+#endregion
+
+#region Unit Functions
+    public void IncreaseBuildingCap(int increaseAmount)
+    {
+        buildingCap += increaseAmount;
+        SetBuildingCapText(buildingCap.ToString());
+    }
+
+    public void IncreaseCurrentBuildingAmount()
+    {
+        currentBuildingAmount++;
+        SetBuildingCurrentText(currentBuildingAmount.ToString());
+    }
+    public void DecreaseBuildingCap(int increaseAmount)
+    {
+        buildingCap -= increaseAmount;
+        SetBuildingCapText(buildingCap.ToString());
+    }
+    public void DecreaseCurrentBuildingAmount(int amount)
+    {
+        currentBuildingAmount -= amount;
+    }
+    void SetBuildingCapText(string cap)
+    {
+        buildingCapText.text = cap;
+    }
+    void SetBuildingCurrentText(string amount)
+    {
+        buildingCurrentText.text = amount;
+    }
+    public int GetCurrentBuildingAmount()
+    {
+        return currentBuildingAmount;
+    }
+    public int GetBuildingCap()
+    {
+        return buildingCap;
     }
 #endregion
 }

@@ -48,13 +48,10 @@ public class BuildingClient : Singleton<BuildingClient>
                     {
                         newBuilding.GetComponent<IUnitProducer>().spawnPoint = GridManager.instance.GetBuildingSpawnPoint(buildingPos);
                         Debug.Log("spawn point x and y: " + newBuilding.GetComponent<IUnitProducer>().spawnPoint.GetX() + " , " + newBuilding.GetComponent<IUnitProducer>().spawnPoint.GetY()); 
-                    } 
+                    }
+                    
+                    PlayerResourceManager.instance.IncreaseCurrentBuildingAmount(); 
                 }
-                else
-                {
-                    //to do
-                    //highlight tiles that are not available to build
-                } 
                 isInitialized = false;
             }
             else if(Input.GetMouseButtonDown(1))

@@ -5,7 +5,7 @@ using BuildingFactoryStatic;
 
 public class EncampmentBuilding : Building, IBuilding, ICapBuilding
 {
-    public override string Name => "Encapment";
+    public override string Name => "Encampment";
     public override string PrefabName => "EncampmentPrefab";
     public override int Width => 2;
     public override int Height => 2;

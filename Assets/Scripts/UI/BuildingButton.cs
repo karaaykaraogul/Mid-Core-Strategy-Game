@@ -15,7 +15,10 @@ public class BuildingButton : MonoBehaviour
 
     public void BuyBuilding()
     {
-        var building = BuildingFactory.GetBuilding(buttonText.text);
-        building.Process();
+        if(PlayerResourceManager.instance.GetCurrentBuildingAmount() < PlayerResourceManager.instance.GetBuildingCap())
+        {
+            var building = BuildingFactory.GetBuilding(buttonText.text);
+            building.Process();
+        }
     }
 }
