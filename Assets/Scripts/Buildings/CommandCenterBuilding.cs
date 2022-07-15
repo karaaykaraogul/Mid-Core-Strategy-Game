@@ -24,7 +24,7 @@ public class CommandCenterBuilding : Building, IBuilding, ICapBuilding
         PlayerResourceManager.instance.IncreaseBuildingCap(capIncreaseAmount);
     }
 
-    void OnDestroy()
+    public void DecreaseCap()
     {
         PlayerResourceManager.instance.DecreaseBuildingCap(capIncreaseAmount);
     }

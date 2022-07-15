@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 566447964519996398}
   - component: {fileID: -9157576190946724111}
   - component: {fileID: -8264945648298188697}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CommandCenterPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}

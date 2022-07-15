@@ -69,4 +69,9 @@ public class InformationPanel : MonoBehaviour
         }
     }
     
+    private void OnDisable()
+    {
+        GameEvents.current.onBuildingSelected -= BuildingSelectedInfo;
+        GameEvents.current.onEmptyClick -= EmptyClickInfo;
+    }
 }

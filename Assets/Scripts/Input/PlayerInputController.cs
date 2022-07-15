@@ -10,6 +10,11 @@ public class PlayerInputController : MonoBehaviour
 {
     public GameObject selectedGameObject;
 
+    void Awake()
+    {
+        Cursor.visible = true;
+    }
+
     private void OnEmptyClick()
     {
         GameEvents.current.OnEmptyClick();

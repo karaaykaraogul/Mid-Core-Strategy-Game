@@ -24,7 +24,7 @@ public class EncampmentBuilding : Building, IBuilding, ICapBuilding
         PlayerResourceManager.instance.IncreaseUnitCap(capIncreaseAmount);
     }
 
-    void OnDestroy()
+    public void DecreaseCap()
     {
         PlayerResourceManager.instance.DecreaseUnitCap(capIncreaseAmount);
     }

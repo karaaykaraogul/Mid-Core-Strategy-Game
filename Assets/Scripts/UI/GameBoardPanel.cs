@@ -52,4 +52,9 @@ public class GameBoardPanel : MonoBehaviour
             Destroy(cObject);
         }
     }
+
+    void OnDisable()
+    {
+        GameEvents.current.onEntityCreated -= OnEntityCreated;
+    }
 }

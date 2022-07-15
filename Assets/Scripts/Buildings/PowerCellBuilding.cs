@@ -24,7 +24,7 @@ public class PowerCellBuilding : Building, IBuilding, ICapBuilding
         PlayerResourceManager.instance.IncreasePowerCap(capIncreaseAmount);
     }
 
-    void OnDestroy()
+    public void DecreaseCap()
     {
         PlayerResourceManager.instance.DecreasePowerCap(capIncreaseAmount);
     }

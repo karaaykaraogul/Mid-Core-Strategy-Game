@@ -80,4 +80,9 @@ public class SoldierUnit : Unit, IBarrackUnit, IMobile
     {
         return isSelected;
     }
+
+    void OnDisable()
+    {
+        GameEvents.current.onEmptyClick -= CancelInteraction;
+    }
 }

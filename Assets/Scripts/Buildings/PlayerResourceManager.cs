@@ -18,7 +18,7 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
     [SerializeField] Text unitCurrentText;
     [SerializeField] Text buildingCapText;
     [SerializeField] Text buildingCurrentText;
-    void OnEnable()
+    void Start()
     {
         SetUnitCapText(unitCap.ToString());
         SetPowerCapText(powerCap.ToString());

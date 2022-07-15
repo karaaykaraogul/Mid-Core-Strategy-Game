@@ -103,6 +103,5 @@ public class TilemapVisual : MonoBehaviour
         mesh.uv = uv;
         mesh.triangles = triangles;
     }
-
 }
 

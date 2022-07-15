@@ -122,19 +122,28 @@ public class Tilemap{
             return null;
         }
 
-        if(endNode.isOccupiedByUnit)
+        
+        var neighbourList = GetNeighbourList(endNode);
+        int i = 0;
+        while(endNode.isOccupiedByUnit || !endNode.isWalkable)
         {
-            foreach(var neighbour in GetNeighbourList(endNode))
+            foreach(var neighbour in neighbourList)
             {
-                if(!neighbour.isOccupiedByUnit)
+                if(!neighbour.isOccupiedByUnit || !endNode.isWalkable)
                 {
                     endNode = neighbour;
                     break;
                 }
             }
-            if(endNode.isOccupiedByUnit)
+            if(endNode.isOccupiedByUnit || !endNode.isWalkable && i <= (neighbourList.Count-1))
             {
-                return null;
+                endNode = neighbourList[i];
+                i++;
+            }
+            if(i >= (neighbourList.Count-1))
+            {
+                neighbourList = GetNeighbourList(neighbourList[i]);
+                i = 0;
             }
         }
 

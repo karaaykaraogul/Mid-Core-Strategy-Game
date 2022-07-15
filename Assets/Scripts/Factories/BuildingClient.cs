@@ -28,6 +28,7 @@ public class BuildingClient : Singleton<BuildingClient>
     {
         while(isInitialized)
         {
+            customCursor.gameObject.SetActive(true);
             if(!GridManager.instance.GetGridAvailability(buildingClass.Width,buildingClass.Height))
             {
                 customCursor.GetComponent<SpriteRenderer>().color = Color.red;
