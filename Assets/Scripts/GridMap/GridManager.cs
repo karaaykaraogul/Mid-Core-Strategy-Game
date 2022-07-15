@@ -85,4 +85,17 @@ public class GridManager : Singleton<GridManager>
             }
         }
     }
+    public void SetGridBuildable(int width, int height, Vector3 buildingWorldPos)
+    {
+        
+        tilemap.GetClickedTilemapObjectNo(buildingWorldPos, out int x, out int y);
+        for(int i = 0; i < width; i++)
+        {
+            for(int j = 0; j < height; j++)
+            {
+                tilemap.SetTileBuildable((int)(x+i),(int)(y+j));
+                tilemap.SetTileWalkable((int)(x+i),(int)(y+j));
+            }
+        }
+    }
 }

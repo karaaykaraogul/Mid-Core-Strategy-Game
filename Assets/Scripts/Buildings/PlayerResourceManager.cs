@@ -124,9 +124,10 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
         buildingCap -= increaseAmount;
         SetBuildingCapText(buildingCap.ToString());
     }
-    public void DecreaseCurrentBuildingAmount(int amount)
+    public void DecreaseCurrentBuildingAmount()
     {
-        currentBuildingAmount -= amount;
+        currentBuildingAmount--;
+        SetBuildingCurrentText(currentBuildingAmount.ToString());
     }
     void SetBuildingCapText(string cap)
     {

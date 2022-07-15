@@ -21,7 +21,7 @@ public class UnitPathfindingMovementHandler : MonoBehaviour
     private void HandleMovement() {
         if (pathVectorList != null) {
             Vector3 targetPosition = pathVectorList[currentPathIndex];
-            if (Vector3.Distance(transform.position, targetPosition) > 0.05f) {
+            if (Vector3.Distance(transform.position, targetPosition) > 0.03f) {
                 Vector3 moveDir = (targetPosition - transform.position).normalized;
 
                 float distanceBefore = Vector3.Distance(transform.position, targetPosition);
@@ -32,6 +32,7 @@ public class UnitPathfindingMovementHandler : MonoBehaviour
                 currentPathIndex++;
                 if (currentPathIndex >= pathVectorList.Count) 
                 {
+                    transform.position = targetPosition;
                     StopMoving();
                 }
             }

@@ -66,6 +66,16 @@ public class Tilemap{
         var tile = grid.GetGridObject(x,y);
         tile.isWalkable = false;
     }
+    public void SetTileBuildable(int x, int y)
+    {
+        var tile = grid.GetGridObject(x,y);
+        tile.isBuildable = true;
+    }
+    public void SetTileWalkable(int x, int y)
+    {
+        var tile = grid.GetGridObject(x,y);
+        tile.isWalkable = true;
+    }
 
     public Grid<TilemapObject> GetGrid()
     {
