@@ -6,7 +6,7 @@ This project is a prototype that consists of base building and unit controlling 
 
 ## Gameplay Overview
 
-![](images/basic_gameplay.mp4)
+https://user-images.githubusercontent.com/43575365/179366938-a325bf3b-7466-4489-9ddb-a3ac8503e9d7.mp4
 
 ## Controls
 - Buildings
