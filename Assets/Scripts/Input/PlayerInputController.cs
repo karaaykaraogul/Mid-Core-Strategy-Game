@@ -44,7 +44,6 @@ public class PlayerInputController : MonoBehaviour
                     }
                 }
                 else{
-                    //to-do implement click on ui and dynamic actions for click types
                     selectedGameObject = hit.collider.gameObject;
                     OnBuildingSelected(this, new OnBuildingSelectedEventArgs{building = selectedGameObject});
                 }

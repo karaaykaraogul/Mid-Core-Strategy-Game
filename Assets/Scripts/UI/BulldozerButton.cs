@@ -33,7 +33,6 @@ public class BulldozerButton : MonoBehaviour
                     if(Input.GetMouseButtonDown(0))
                     {
                         isDeleting = false;
-                        Debug.Log("clicked on: " + hoverOverObject.name);
                         if(hoverOverObject.GetComponent<ICapBuilding>() != null)
                         {
                             hoverOverObject.GetComponent<ICapBuilding>().DecreaseCap();

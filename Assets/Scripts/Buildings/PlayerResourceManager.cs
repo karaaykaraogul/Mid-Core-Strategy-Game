@@ -18,6 +18,8 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
     [SerializeField] Text unitCurrentText;
     [SerializeField] Text buildingCapText;
     [SerializeField] Text buildingCurrentText;
+
+    //set the default starting texts
     void Start()
     {
         SetUnitCapText(unitCap.ToString());
@@ -28,7 +30,7 @@ public class PlayerResourceManager : Singleton<PlayerResourceManager>
         SetBuildingCurrentText(currentBuildingAmount.ToString());
     }
 
-
+//functions that are related to different resources are split below with regions
 #region Unit Functions
     public void IncreaseUnitCap(int increaseAmount)
     {

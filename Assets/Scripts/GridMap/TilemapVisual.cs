@@ -50,7 +50,7 @@ public class TilemapVisual : MonoBehaviour
     public void SetGrid(Tilemap tilemap, Grid<Tilemap.TilemapObject> grid) 
     {
         this.grid = grid;
-        UpdateHeatMapVisual();
+        UpdateMapVisual();
 
         grid.OnGridObjectChanged += Grid_OnGridValueChanged;
         tilemap.OnLoaded += Tilemap_OnLoaded;
@@ -70,11 +70,11 @@ public class TilemapVisual : MonoBehaviour
     {
         if (updateMesh) {
             updateMesh = false;
-            UpdateHeatMapVisual();
+            UpdateMapVisual();
         }
     }
 
-    private void UpdateHeatMapVisual() 
+    private void UpdateMapVisual() 
     {
         MeshUtils.CreateEmptyMeshArrays(grid.GetWidth() * grid.GetHeight(), out Vector3[] vertices, out Vector2[] uv, out int[] triangles);
 

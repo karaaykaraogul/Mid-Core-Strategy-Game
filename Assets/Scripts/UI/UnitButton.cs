@@ -26,7 +26,6 @@ public class UnitButton : MonoBehaviour
         if(PlayerResourceManager.instance.GetCurrentUnitAmount() < PlayerResourceManager.instance.GetUnitCap())
         {
             var unit = UnitFactory.GetUnit(buttonText.text);
-            Debug.Log("clicked on: " + unit.Name);
             unit.Process(initializedFromBuilding);
         }
     }

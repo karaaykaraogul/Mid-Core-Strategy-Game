@@ -9,7 +9,6 @@ public class Tilemap{
     public event EventHandler OnLoaded;
 
     private Grid<TilemapObject> grid;
-    //private Grid<PathNode> pathGrid;
     public static Tilemap Instance {get; private set;}
 
     private List<TilemapObject> openList;
@@ -20,8 +19,8 @@ public class Tilemap{
     public Tilemap(int width, int height, float cellSize, Vector3 originPosition) 
     {
         Instance = this;
+        //initialize the grid with the given parametres from grid manager and with the tilemapobject type
         grid = new Grid<TilemapObject>(width, height, cellSize, originPosition, (Grid<TilemapObject> g, int x, int y) => new TilemapObject(g, x, y));
-        //pathGrid = new Grid<PathNode>(width, height, cellSize, originPosition, (Grid<PathNode> g, int x, int y) => new PathNode(g, x, y));
     }
 
     public void SetDefaultGrid(int width, int height, TilemapObject.TilemapSprite tilemapSprite)
@@ -105,6 +104,13 @@ public class Tilemap{
         return tileMapObject.isBuildable;
     }
 
+    private TilemapObject GetNode(int x, int y)
+    {
+        return grid.GetGridObject(x,y);
+    }
+
+    //pathfinding is intertwined with tilemap and tilemapobjects
+    //therefore A* pathfinding algorithms are listed below in pathfinding region
     #region Pathfinding
     public List<Vector3> FindPath(Vector3 startWorldPosition, Vector3 endWorldPosition) {
         grid.GetXY(startWorldPosition, out int startX, out int startY);
@@ -176,13 +182,13 @@ public class Tilemap{
         startNode.gCost = 0;
         startNode.hCost = CalculateDistanceCost(startNode,endNode);
         startNode.CalculateFCost();
-
+        //search until there is no nodes in openlist
         while(openList.Count > 0)
         {
             TilemapObject currentNode = GetLowestFCostNode(openList);
             if(currentNode == endNode)
             {
-                Debug.Log("son node geldi");
+                //calculate path is called when you reach the end node
                 currentNode.isOccupiedByUnit = true;
                 return CalculatePath(endNode);
             }
@@ -193,15 +199,18 @@ public class Tilemap{
             foreach(TilemapObject neighbourNode in GetNeighbourList(currentNode))
             {
                 if(closedList.Contains(neighbourNode)) continue;
+                //automatically add unwalkable nodes to closed list
                 if(!neighbourNode.isWalkable)
                 {
                     closedList.Add(neighbourNode);
                     continue;
                 }
-
+                //temp G cost is assigned to neighbour nodes
                 int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, neighbourNode);
+                //if the temp g is lower than assigned g cost assigns the new g cost
                 if(tentativeGCost < neighbourNode.gCost)
                 {
+                    //assigns the previous node to next node so we can reverse track while calculating path
                     neighbourNode.cameFromNode = currentNode;
                     neighbourNode.gCost = tentativeGCost;
                     neighbourNode.hCost = CalculateDistanceCost(neighbourNode, endNode);
@@ -219,6 +228,8 @@ public class Tilemap{
         return null;
     }
 
+    //gets the neighbours of a given current node
+    //with current node in the middle and 3x3 square neighbours around the current node
     private List<TilemapObject> GetNeighbourList(TilemapObject currentNode)
     {
         List<TilemapObject> neighbourList = new List<TilemapObject>();
@@ -249,10 +260,6 @@ public class Tilemap{
         return neighbourList;
     }
 
-    private TilemapObject GetNode(int x, int y)
-    {
-        return grid.GetGridObject(x,y);
-    }
 
     private List<TilemapObject> CalculatePath(TilemapObject endNode)
     {
@@ -290,26 +297,26 @@ public class Tilemap{
     }
     #endregion
 
-    /*
-     * Represents a single Tilemap Object that exists in each Grid Cell Position
-     * */
+    
+    //Represents a single Tilemap Object that exists in each Grid Cell Position
     public class TilemapObject : IBuildable, IWalkable {
 
         public enum TilemapSprite {
             None,
-            BuildDefault,
-            Barracks,
-            // Dirt,
+            BuildDefault
         }
 
         private Grid<TilemapObject> grid;
         private int x;
         private int y;
-
+        //every object has these three variables in order to use a* pathfinding
+        //G = walking cost from the start node
         public int gCost;
+        //H = heuristic cost to reach end node this, estimated calculation is done without adding walls or any blocking objects
         public int hCost;
+        //F = G + H
         public int fCost;
-
+        
         public TilemapObject cameFromNode;
 
         private TilemapSprite tilemapSprite;
@@ -339,11 +346,6 @@ public class Tilemap{
             _isWalkable = true;
             _isOccupiedByUnit = false;
         }
-
-        // public override string ToString()
-        // {
-        //     return x+","+y;
-        // }
 
         public void CalculateFCost()
         {
